@@ -73,20 +73,16 @@
             pointer-events: none;
         }
 
-        /* 左图样式 */
         .left-image {
             display: block;
-            margin: 30px auto; /* 图片居中 */
-            max-width: 240px; /* 放大1倍 */
-            max-height: 240px;
+            margin: 30px auto;
+            max-width: 240px;
             height: auto;
-            width: auto;
             object-fit: contain;
             border-radius: 10px;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* 弹窗样式 */
         .popup {
             display: none;
             position: fixed;
@@ -99,6 +95,7 @@
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
+            z-index: 1000;
         }
         .popup p {
             margin: 0;
@@ -106,14 +103,20 @@
         }
         .popup button {
             margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
             background-color: #d97706;
             color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup button:hover {
+            background-color: #b45309;
         }
         .popup .image-container img {
-            max-width: 150px; /* 保持右图适中大小 */
-            max-height: 150px;
+            max-width: 150px;
             height: auto;
-            width: auto;
             border-radius: 10px;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
@@ -126,20 +129,17 @@
     <p>祝妳天天都開心幸福！</p>
     <p>越來越可愛越來越漂亮！！</p>
 
-    <!-- 左图移动到段落下方 -->
-    <img src="小新1.png" alt="左图" class="left-image">
+    <img src="小新1.png" alt="生日祝福圖片" class="left-image" onerror="handleImageError('小新1.png')">
 
     <button onclick="showSurprise()">點我!！</button>
     
     <canvas id="fireworks"></canvas>
 
-    <!-- 自訂彈窗 -->
     <div class="popup" id="popup">
         <p>🎉🎉出現了!大漂亮又可愛又小色貪睡小懶豬小笨蛋小乖生日快樂!!🎉🎉</p>
         <button onclick="closePopup()">關閉</button>
-        <!-- 右侧图片在弹窗内 -->
         <div class="image-container">
-            <img src="小新.jpg" alt="右图">
+            <img src="小新.jpg" alt="生日快樂大圖" onerror="handleImageError('小新.jpg')">
         </div>
     </div>
 
@@ -149,7 +149,6 @@
         const popup = document.getElementById('popup');
         let fireworks = [];
 
-        // 調整畫布大小
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -157,7 +156,6 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // 煙火特效
         function createFirework(x, y, colors) {
             for (let i = 0; i < 100; i++) {
                 fireworks.push({
@@ -192,19 +190,20 @@
         }
         drawFireworks();
 
-        // 自動播放煙火特效
         window.onload = () => {
             createFirework(canvas.width / 2, canvas.height / 2, ['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f']);
         };
 
-        // 顯示彈窗
         function showSurprise() {
             popup.style.display = 'block';
         }
 
-        // 關閉彈窗
         function closePopup() {
             popup.style.display = 'none';
+        }
+
+        function handleImageError(imageName) {
+            alert(`無法載入圖片：${imageName}`);
         }
     </script>
 </body>
