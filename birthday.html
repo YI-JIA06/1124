@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快樂</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fef3c7;
+            color: #d97706;
+            margin: 0;
+            padding: 50px;
+            animation: fadeIn 2s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+        button:hover {
+            background-color: #d97706;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* 左图样式 */
+        .left-image {
+            display: block;
+            margin: 30px auto; /* 图片居中 */
+            max-width: 240px; /* 放大1倍 */
+            max-height: 240px;
+            height: auto;
+            width: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 弹窗样式 */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 2px solid #d97706;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .popup p {
+            margin: 0;
+            color: #333;
+        }
+        .popup button {
+            margin-top: 15px;
+            background-color: #d97706;
+            color: white;
+        }
+        .popup .image-container img {
+            max-width: 150px; /* 保持右图适中大小 */
+            max-height: 150px;
+            height: auto;
+            width: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>王貞妮大漂亮</h1>
+    <p>🎉🎉生日快樂！🎂🎂🎉🎉</p>
+    <p>祝妳天天都開心幸福！</p>
+    <p>越來越可愛越來越漂亮！！</p>
+
+    <!-- 左图移动到段落下方 -->
+    <img src="小新1.png" alt="左图" class="left-image">
+
+    <button onclick="showSurprise()">點我!！</button>
+    
+    <canvas id="fireworks"></canvas>
+
+    <!-- 自訂彈窗 -->
+    <div class="popup" id="popup">
+        <p>🎉🎉出現了!大漂亮又可愛又小色貪睡小懶豬小笨蛋小乖生日快樂!!🎉🎉</p>
+        <button onclick="closePopup()">關閉</button>
+        <!-- 右侧图片在弹窗内 -->
+        <div class="image-container">
+            <img src="小新.jpg" alt="右图">
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        const popup = document.getElementById('popup');
+        let fireworks = [];
+
+        // 調整畫布大小
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // 煙火特效
+        function createFirework(x, y, colors) {
+            for (let i = 0; i < 100; i++) {
+                fireworks.push({
+                    x: x,
+                    y: y,
+                    angle: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 5 + 2,
+                    radius: Math.random() * 2 + 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 50 + Math.random() * 50,
+                });
+            }
+        }
+
+        function drawFireworks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            fireworks = fireworks.filter(firework => firework.life > 0);
+
+            fireworks.forEach(firework => {
+                firework.x += Math.cos(firework.angle) * firework.speed;
+                firework.y += Math.sin(firework.angle) * firework.speed;
+                firework.life--;
+
+                ctx.beginPath();
+                ctx.arc(firework.x, firework.y, firework.radius, 0, Math.PI * 2);
+                ctx.fillStyle = firework.color;
+                ctx.fill();
+            });
+
+            requestAnimationFrame(drawFireworks);
+        }
+        drawFireworks();
+
+        // 自動播放煙火特效
+        window.onload = () => {
+            createFirework(canvas.width / 2, canvas.height / 2, ['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f']);
+        };
+
+        // 顯示彈窗
+        function showSurprise() {
+            popup.style.display = 'block';
+        }
+
+        // 關閉彈窗
+        function closePopup() {
+            popup.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
