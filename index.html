@@ -98,7 +98,7 @@
             z-index: 1000;
         }
         .popup p {
-            margin: 0;
+            margin: 10px 0; /* 調整每行文字之間的間距 */
             color: #333;
         }
         .popup button {
@@ -135,8 +135,11 @@
     
     <canvas id="fireworks"></canvas>
 
+    <!-- 彈窗結構 -->
     <div class="popup" id="popup">
-        <p>🎉🎉出現了!大漂亮又可愛又小色貪睡小懶豬小笨蛋小乖生日快樂!!🎉🎉</p>
+        <p>🎉出現了!🎉</p>
+        <p>大漂亮又可愛又小色貪睡小懶豬小笨蛋小乖</p>
+        <p>🎉生日快樂!!🎉</p>
         <button onclick="closePopup()">關閉</button>
         <div class="image-container">
             <img src="小新.jpg" alt="生日快樂大圖" onerror="handleImageError('小新.jpg')">
